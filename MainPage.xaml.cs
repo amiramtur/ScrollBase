@@ -1,24 +1,31 @@
-﻿namespace ScrollBase
+﻿using System;
+using Microsoft.Maui.Controls;
+using ScrollBase.Views;
+
+namespace ScrollBase
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
+        //private async void LoadSaved(object sender, EventArgs e)
+        //{
+        //    ContentPage p = new Saved();
+        //    await App.Current.MainPage.Navigation.PushAsync(p);
+        //}
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
+        //private async void LoadAdd(object sender, EventArgs e)
+        //{
+        //    ContentPage p = new Add();
+        //    await App.Current.MainPage.Navigation.PushAsync(p);
+        //}
+        //private async void LoadLogin(object sender, EventArgs e)
+        //{
+        //    ContentPage p = new Login();
+        //    await App.Current.MainPage.Navigation.PushAsync(p);
+        //}
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm ="clr-namespace:ScrollBase.ViewModels"
+             x:Class="ScrollBase.Views.DetailsPage"
+             x:DataType="vm:DetailsPageVM"
+             Title="DetailsPage">
+    
+    <VerticalStackLayout Padding="10" Margin="20,20,20,0">
+
+        <Label  Text="{Binding FailError}"  />
+        <Border Padding="10,2,10,2" >
+            <Entry Placeholder="Email" VerticalOptions="Center" Text="{Binding Appuser.Email}"/>
+        </Border>
+        <Border Padding="10,2,10,2" >
+            <Entry Placeholder="Password" VerticalOptions="Center" Text="{Binding Appuser.Password}"/>
+        </Border>
+        <Button Text="Save" Command="{Binding SaveAndUpdateCommand} "/>
+        <!--<Button Text="Cancle" Command="{Binding SaveAndUpdateCommand}"/>-->
+    </VerticalStackLayout>
+</ContentPage>

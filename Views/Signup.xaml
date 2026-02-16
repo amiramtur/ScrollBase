@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ScrollBase.ViewModels"
+             x:DataType="vm:SignupVM"
+             x:Class="ScrollBase.Views.Signup"
+             Title="Signup">
+
+    <VerticalStackLayout>
+
+        <Entry x:Name="EmailEntry" Placeholder="email" Text="{Binding Email}" HorizontalTextAlignment="End"/>
+        <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
+        <Button Text="Sign Up" Command="{Binding SignupCommand}" BackgroundColor="LawnGreen"></Button>
+
+        <Label></Label>
+        <Label></Label>
+        <Label Text="Already have an account?" HorizontalTextAlignment="Center"></Label>
+        <Button Text="Login " Clicked="LoadLogin"></Button>
+
+    </VerticalStackLayout>
+    
+</ContentPage>

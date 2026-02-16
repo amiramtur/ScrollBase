@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ScrollBase.Views.Add"
+             Title="Add Poster">
+
+    <VerticalStackLayout>
+        <Picker x:Name="myDropdown" Title="Select an option">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>YouTube</x:String>
+                    <x:String>Twitter/X</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+
+        <Entry x:Name="NameEntry" Placeholder="Enter username"/>
+        <Button Text="Add"></Button>
+
+        <Grid Grid.Row="2" Padding="50,261"></Grid>
+        <Grid Grid.Row="3" Padding="30,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Text="saved" Clicked="LoadSaved"/>
+            <Button Grid.Column="1" Text="home" Clicked="LoadHome"/>
+            <Button Grid.Column="2" Text="add"/>
+        </Grid>
+        
+    </VerticalStackLayout>
+</ContentPage>
