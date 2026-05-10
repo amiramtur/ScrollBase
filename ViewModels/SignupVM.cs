@@ -13,19 +13,18 @@ using ScrollBase.Services;
 
 namespace ScrollBase.ViewModels
 {
-    public partial class SignupVM : ObservableObject
+    public partial class SignupVM : NetworkAwareViewModel
     {
         private readonly FirebaseClient _client;
         private readonly FirebaseAuthClient _authClient;
 
-        // using partial properties for AOT compatibility (MVVMTK0045 fix)
         [ObservableProperty]
         private string? _email;
 
         [ObservableProperty]
         private string? _password;
 
-        public SignupVM(FirebaseClient client, FirebaseAuthClient authClient)
+        public SignupVM(FirebaseClient client, FirebaseAuthClient authClient, NetworkService network) : base(network)
         {
             _client = client;
             _authClient = authClient;
@@ -34,40 +33,56 @@ namespace ScrollBase.ViewModels
         [RelayCommand]
         private async Task Signup()
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            // call the base class method
+            bool hasInternet = await EnsureConnectedAsync();
+
+            // if it tried 5 times and still failed, stop the signup process.
+            // (EnsureConnectedAsync already shows the error alert for you, so we just return).
+            if (!hasInternet)
             {
-                await Shell.Current.DisplayAlert("Error", "No internet connection", "OK");
                 return;
             }
 
             // service input check
             if (!InputCheck.IsEmailValid(Email))
             {
-                await Shell.Current.DisplayAlert("Invalid Email", "Ensure your input contains legal characters (Aa-Zz 1-9) and is at least 6 characters long", "OK");
+                await Application.Current.MainPage.DisplayAlert("Invalid Email", "Ensure your input contains legal characters (Aa-Zz 1-9) and is at least 6 characters long", "OK");
                 return;
             }
-
             else if (!InputCheck.IsPasswordValid(Password))
             {
-                await Shell.Current.DisplayAlert("Invalid Password", "Ensure your input contains legal characters (Aa-Zz 1-9) and is at least 6 characters long", "OK");
+                await Application.Current.MainPage.DisplayAlert("Invalid Password", "Ensure your input contains legal characters (Aa-Zz 1-9) and is at least 6 characters long", "OK");
                 return;
             }
 
             try
             {
-                // attempt sign up and await the result
+                // 1. Firebase signup
                 var result = await _authClient.CreateUserWithEmailAndPasswordAsync(Email!, Password!);
-                await _client.Child("AppUser").PostAsync(new AppUser
+
+                // 2. Hop onto the Main UI Thread to update the screen
+                MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    Id = _authClient.User.Uid,
-                    Email = _email,
-                    Password = _password
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await _client.Child("AppUser").PostAsync(new AppUser
+                        {
+                            Id = _authClient.User.Uid,
+                            Email = _email,
+                            Password = _password
+                        });
+
+                        await Application.Current.MainPage.DisplayAlert("Signup", "Signup success.", "OK");
+
+                        // 3. Swap the entire app over to your Flyout Menu!
+                        Application.Current.MainPage = new AppShell();
+                    }
                 });
-                // result is an id that can be used for checks
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Signup failed", "Something went wrong", "OK");
+                // Fixed this one too!
+                await Application.Current.MainPage.DisplayAlert("Signup failed", "Something went wrong", "OK");
             }
         }
     }

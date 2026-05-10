@@ -16,8 +16,8 @@ public partial class Login : ContentPage
 
     private async void LoadSignup(object sender, EventArgs e)
     {
-        int i = 0;
-        //ContentPage p = new Signup();
-        //await App.Current.MainPage.Navigation.PushAsync(p);
+        var signupPage = Handler.MauiContext.Services.GetService<Signup>();
+
+        await Application.Current.MainPage.Navigation.PushAsync(signupPage);
     }
 }

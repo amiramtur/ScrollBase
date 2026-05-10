@@ -58,8 +58,11 @@ namespace ScrollBase.Services
 
         public static bool IsLinkValid(string link)
         {
-            if (System.Text.Ascii.IsValid(link)) return true;
-            return false;
+            if (string.IsNullOrWhiteSpace(link)) return false;
+
+            // checks if it's a valid URI structure (http / https)
+            return Uri.TryCreate(link, UriKind.Absolute, out Uri uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
     }
 }

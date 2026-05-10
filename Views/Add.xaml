@@ -1,24 +1,64 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ScrollBase.ViewModels"
+             x:DataType="vm:ManageWebPagesVM"
              x:Class="ScrollBase.Views.Add"
-             Title="Add Poster">
+             Title="Manage Pages">
 
-    <VerticalStackLayout>
-        <Picker x:Name="myDropdown" Title="Select an option">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>YouTube</x:String>
-                    <x:String>Twitter/X</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20">
 
-        <Entry x:Name="NameEntry" Placeholder="Enter username"/>
-        <Button Text="Add"></Button>
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="Center" Margin="0,0,0,20">
+            <Label Text="Add" VerticalOptions="Center" FontAttributes="Bold" />
+            <Switch x:Name="ModeSwitch" IsToggled="{Binding IsRemoveMode}" />
+            <Label Text="Remove" VerticalOptions="Center" FontAttributes="Bold" />
+        </HorizontalStackLayout>
 
-        <Grid Grid.Row="2" Padding="50,261"></Grid>
-        <Grid Grid.Row="3" Padding="30,0">
+
+        <ScrollView Grid.Row="1">
+            <Grid>
+                <VerticalStackLayout Spacing="15">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Source={x:Reference ModeSwitch}, Path=IsToggled}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+
+                    <Picker Title="Select an option">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>YouTube</x:String>
+                                <x:String>Twitter/X</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+
+                    <Entry Placeholder="Enter page name" Text="{Binding Name}"/>
+                    <Entry Placeholder="Enter valid link (e.g. https://x.com/home)" Text="{Binding Link}"/>
+                    <Button Text="Add Poster" Command="{Binding AddPageCommand}" BackgroundColor="LawnGreen" TextColor="Black" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="15" IsVisible="False">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Source={x:Reference ModeSwitch}, Path=IsToggled}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+
+                    <Label Text="Select a page to permanently delete:" TextColor="Red" />
+
+                    <Picker Title="Select page to remove" 
+                            ItemsSource="{Binding SavedPagesList}" 
+                            ItemDisplayBinding="{Binding Name}" 
+                            SelectedItem="{Binding SelectedPageToRemove}" />
+
+                    <Button Text="Delete Poster" Command="{Binding RemovePageCommand}" BackgroundColor="Red" TextColor="White" FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+
+
+        <Grid Grid.Row="2" Padding="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -26,8 +66,8 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Text="saved" Clicked="LoadSaved"/>
             <Button Grid.Column="1" Text="home" Clicked="LoadHome"/>
-            <Button Grid.Column="2" Text="add"/>
+            <Button Grid.Column="2" Text="add" BackgroundColor="LightGray"/>
         </Grid>
-        
-    </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

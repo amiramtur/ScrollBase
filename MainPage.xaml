@@ -3,48 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ScrollBase.MainPage">
 
-    <Grid Padding="30,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
-        <Label Grid.Row="0" Text="ScrollBase" FontSize="30" HorizontalTextAlignment="Center"/>
-        
-        <Grid Grid.Row="1" Padding="30,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <!--<Button Grid.Row="0" Grid.Column="3" Text="Login" Clicked="LoadLogin"></Button>-->
-        </Grid>
-        
+    <Grid RowDefinitions="Auto, *">
 
-        
-        <ScrollView Grid.Row="2">
-            <VerticalStackLayout Spacing="25">
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-                <Label Text="POST" FontSize="170" HorizontalTextAlignment="Center"/>
-            </VerticalStackLayout>
-        </ScrollView>
+        <SearchBar Grid.Row="0" 
+                   Placeholder="Search your saved pages..." 
+                   Text="{Binding SearchQuery}" 
+                   Margin="10,10,10,0"/>
 
-        <Grid Grid.Row="3" Padding="30,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <!--<Button Grid.Column="0" Text="saved" Clicked="LoadSaved"/>
-            <Button Grid.Column="1" Text="home"/>
-            <Button Grid.Column="2" Text="add" Clicked="LoadAdd"/>-->
-        </Grid>
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding WebContainers}"
+                        SelectionMode="None"
+                        ItemsLayout="HorizontalList"
+                        Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="Gray"
+                           CornerRadius="10"
+                           Padding="0"
+                           Margin="6"
+                           HasShadow="False"
+                           WidthRequest="360">
+                        <WebView Source="{Binding Url}"
+                                 HeightRequest="{Binding HeightRequest}"
+                                 VerticalOptions="FillAndExpand" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 
 </ContentPage>

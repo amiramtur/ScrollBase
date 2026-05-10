@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:ScrollBase.ViewModels"
+             xmlns:controls="clr-namespace:ScrollBase.Controls"
              x:DataType="vm:LoginVM"
              x:Class="ScrollBase.Views.Login"
              Title="Login">
@@ -9,7 +10,7 @@
     <VerticalStackLayout>
 
         <Entry x:Name="EmailEntry" Placeholder="email" Text="{Binding Email}" HorizontalTextAlignment="End"/>
-        <Entry x:Name="PasswordEntry" Placeholder="Password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
+        <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
         <Button Text="Login" BackgroundColor="LawnGreen" Command="{Binding LoginCommand}"/>
 
         <Label></Label>
@@ -17,5 +18,6 @@
         <Label Text="Don't have an account?" HorizontalTextAlignment="Center"></Label>
         <Button Text="Create an account " Clicked="LoadSignup"> </Button>
 
+        <controls:NetworkRetryOverlay />
     </VerticalStackLayout>
 </ContentPage>

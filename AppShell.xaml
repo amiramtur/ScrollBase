@@ -8,39 +8,37 @@
     Shell.FlyoutBehavior="Flyout"
     Title="ScrollBase">
 
-    <FlyoutItem Title="main menu">
-        <Tab Title="login">
+    <!--<ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:Login}"
+        Route="Login"
+        FlyoutItemIsVisible="False" />
+
+    <ShellContent
+        Title="Signup"
+        ContentTemplate="{DataTemplate views:Signup}"
+        Route="SignUp"
+        FlyoutItemIsVisible="False" />-->
+
+
+    <FlyoutItem Title="main menu" Route="MainMenu">
+
+        <Tab Title="Home">
             <ShellContent
-             Title="Login"
-             ContentTemplate="{DataTemplate views:Login}"
-             Route="Login"/>
+             Title="Home"
+             ContentTemplate="{DataTemplate local:MainPage}"
+             Route="Home"/>
         </Tab>
 
-        <Tab Title="signup">
-            <ShellContent
-             Title="Signup"
-             ContentTemplate="{DataTemplate views:Signup}"
-             Route="Signup"/>    
-        </Tab>
-
-        <Tab Title="add page">
+        <Tab Title="Manage Pages">
             <ShellContent
              Title="Add Page"
              ContentTemplate="{DataTemplate views:AddWebPage}"
-             Route="Signup"/>   
+             Route="AddPage"/>
         </Tab>
 
-        <!--<Tab Title="userlist">
-            <ShellContent
-             Title="AppUserList"
-             ContentTemplate="{DataTemplate views:AppUserList}"
-             Route="AppUserList"/>   
-        </Tab>-->
     </FlyoutItem>
 
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
+    <MenuItem Text="Log Out" Clicked="OnLogoutClicked" />
 
 </Shell>

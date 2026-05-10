@@ -1,13 +1,116 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using Firebase.Auth;
+using Firebase.Database;
+using Firebase.Database.Query;
+using ScrollBase.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq; // Added for the filter query
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace ScrollBase.ViewModels
 {
-    public partial class MainPageVM : ObservableObject
+    public partial class MainPageVM : INotifyPropertyChanged
     {
+        private readonly FirebaseClient _firebaseClient;
+        private readonly FirebaseAuthClient _authClient;
+
+        // 1. A master list to keep the original data safe when we filter
+        private List<SavedPageModel> _allPages = new();
+
+        public ObservableCollection<SavedPageModel> WebContainers { get; set; } = new();
+
+        // 2. The SearchQuery property linked to your XAML SearchBar
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                if (_searchQuery != value)
+                {
+                    _searchQuery = value;
+                    OnPropertyChanged();
+                    // Instantly trigger the filter whenever they type!
+                    FilterPages();
+                }
+            }
+        }
+
+        public MainPageVM(FirebaseClient firebaseClient, FirebaseAuthClient authClient)
+        {
+            _firebaseClient = firebaseClient;
+            _authClient = authClient;
+        }
+
+        public async Task LoadUserFeedAsync()
+        {
+            try
+            {
+                var user = _authClient?.User;
+                if (user == null || string.IsNullOrEmpty(user.Uid))
+                    return;
+
+                var uid = user.Uid;
+
+                var savedPagesData = await _firebaseClient
+                    .Child("SavedPages")
+                    .Child(uid)
+                    .OnceAsync<SavedPageModel>();
+
+                WebContainers.Clear();
+                _allPages.Clear(); // Clear the master list on fresh load
+
+                if (savedPagesData != null)
+                {
+                    foreach (var item in savedPagesData)
+                    {
+                        if (item?.Object != null)
+                        {
+                            WebContainers.Add(item.Object);
+                            _allPages.Add(item.Object); // Back it up!
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"FIREBASE CRASH: {ex.Message}");
+            }
+        }
+
+        // 3. The Filter Logic
+        private void FilterPages()
+        {
+            // If the search bar is empty, show all the pages again
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                WebContainers.Clear();
+                foreach (var item in _allPages)
+                {
+                    WebContainers.Add(item);
+                }
+            }
+            else
+            {
+                // Filter the list based on what they typed (ignoring uppercase/lowercase)
+                var filtered = _allPages.Where(p =>
+                    p.PageName != null &&
+                    p.PageName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                WebContainers.Clear();
+                foreach (var item in filtered)
+                {
+                    WebContainers.Add(item);
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

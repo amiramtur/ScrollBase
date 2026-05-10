@@ -4,6 +4,7 @@ using Firebase.Auth.Repository;
 using Firebase.Database;
 using Microsoft.Extensions.Logging;
 using ScrollBase.Models;
+using ScrollBase.Services;
 using ScrollBase.ViewModels;
 using ScrollBase.Views;
 
@@ -51,7 +52,8 @@ namespace ScrollBase
             builder.Services.AddSingleton<AppUserList>();
             builder.Services.AddSingleton<DetailsPageVM>();
             builder.Services.AddSingleton<DetailsPage>();
-            builder.Services.AddSingleton<AddWebPageVM>();
+            builder.Services.AddSingleton<ManageWebPagesVM>();
+            builder.Services.AddSingleton<NetworkService>();
 
             return builder.Build();
         }

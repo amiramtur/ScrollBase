@@ -1,13 +1,15 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Android.Net;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Firebase.Auth;
 using Microsoft.Maui.Networking;
 using System;
 using System.Threading.Tasks;
+using ScrollBase.Services;
 
 namespace ScrollBase.ViewModels
 {
-    public partial class LoginVM : ObservableObject
+    public partial class LoginVM : NetworkAwareViewModel
     {
         private readonly FirebaseAuthClient _client;
 
@@ -17,7 +19,7 @@ namespace ScrollBase.ViewModels
         [ObservableProperty]
         private string? _password;
 
-        public LoginVM(FirebaseAuthClient client)
+        public LoginVM(FirebaseAuthClient client, NetworkService network) : base(network)
         {
             _client = client;
         }
@@ -25,18 +27,33 @@ namespace ScrollBase.ViewModels
         [RelayCommand]
         private async Task Login()
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            // call the base class method
+            bool hasInternet = await EnsureConnectedAsync();
+
+            // if it tried 5 times and still failed, stop the signup process.
+            // (EnsureConnectedAsync already shows the error alert for you, so we just return).
+            if (!hasInternet)
             {
-                await Shell.Current.DisplayAlert("Error", "No internet connection", "OK");
                 return;
             }
 
             try
             {
                 // attempt sign in and await the result
+                // 1. Firebase login
                 var result = await _client.SignInWithEmailAndPasswordAsync(Email!, Password!);
 
-                await Shell.Current.DisplayAlert("Login", "Login success.", "OK");
+                // 2. Hop onto the Main UI Thread to update the screen
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Login", "Login success.", "OK");
+
+                        // 3. Swap the entire app over Flyout Menu
+                        Application.Current.MainPage = new AppShell();
+                    }
+                });
             }
             catch (FirebaseAuthException fae)
             {

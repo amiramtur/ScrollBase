@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ScrollBase.ViewModels"
+             xmlns:controls="clr-namespace:ScrollBase.Controls"
+             x:DataType="vm:ManageWebPagesVM"
+             x:Class="ScrollBase.Views.AddWebPage"
+             Title="Manage Pages">
+
+    <Grid RowDefinitions="Auto, *" Padding="20">
+
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" HorizontalOptions="Center" Margin="0,0,0,30">
+            <Label Text="Add" VerticalOptions="Center" FontAttributes="Bold" />
+            <Switch x:Name="ModeSwitch" IsToggled="{Binding IsRemoveMode}" />
+            <Label Text="Remove" VerticalOptions="Center" FontAttributes="Bold" />
+        </HorizontalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <Grid>
+
+                <VerticalStackLayout Spacing="15">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Source={x:Reference ModeSwitch}, Path=IsToggled}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+
+                    <Entry x:Name="NameEntry" Placeholder="title" Text="{Binding Name}" HorizontalTextAlignment="End"/>
+                    <Entry x:Name="LinkEntry" Placeholder="link" Text="{Binding Link}" HorizontalTextAlignment="End"/>
+                    <Button x:Name="AddButton" Text="Add page" BackgroundColor="LawnGreen" Command="{Binding AddPageCommand}"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="15" IsVisible="False">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Source={x:Reference ModeSwitch}, Path=IsToggled}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </VerticalStackLayout.Triggers>
+
+                    <Label Text="Select a page to permanently delete:" TextColor="Red" HorizontalTextAlignment="Center"/>
+
+                    <Picker Title="Select page to remove" 
+                            ItemsSource="{Binding SavedPagesList}" 
+                            ItemDisplayBinding="{Binding PageName}" 
+                            SelectedItem="{Binding SelectedPageToRemove}" 
+                            HorizontalTextAlignment="End"/>
+
+                    <Button Text="Delete Page" Command="{Binding RemovePageCommand}" BackgroundColor="Red" TextColor="White" FontAttributes="Bold"/>
+                    <controls:NetworkRetryOverlay />
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

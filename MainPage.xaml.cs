@@ -1,31 +1,29 @@
-﻿using System;
-using Microsoft.Maui.Controls;
-using ScrollBase.Views;
+﻿using Microsoft.Maui.Controls;
+using ScrollBase.ViewModels;
 
 namespace ScrollBase
 {
     public partial class MainPage : ContentPage
     {
-        public MainPage()
+        private readonly MainPageVM _viewModel;
+
+        public MainPage(MainPageVM viewModel)
         {
             InitializeComponent();
+
+            // Set the BindingContext to our injected ViewModel
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
         }
 
-        //private async void LoadSaved(object sender, EventArgs e)
-        //{
-        //    ContentPage p = new Saved();
-        //    await App.Current.MainPage.Navigation.PushAsync(p);
-        //}
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
 
-        //private async void LoadAdd(object sender, EventArgs e)
-        //{
-        //    ContentPage p = new Add();
-        //    await App.Current.MainPage.Navigation.PushAsync(p);
-        //}
-        //private async void LoadLogin(object sender, EventArgs e)
-        //{
-        //    ContentPage p = new Login();
-        //    await App.Current.MainPage.Navigation.PushAsync(p);
-        //}
+            if (_viewModel != null)
+            {
+                await _viewModel.LoadUserFeedAsync();
+            }
+        }
     }
 }

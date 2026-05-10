@@ -1,16 +1,21 @@
-﻿namespace ScrollBase
+﻿using ScrollBase.Views;
+
+namespace ScrollBase
 {
     public partial class App : Application
     {
-        public App()
+        public App(ScrollBase.Views.Signup signupPage)
         {
             InitializeComponent();
+
+            MainPage = new NavigationPage(signupPage);
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
-            // return new Window(new <page_name>());
+            // This tells MAUI to use your AppShell as the root window. 
+            // AppShell will then look at its XAML to decide which page to show first.
+            return new Window(MainPage);
         }
     }
 }
