@@ -80,7 +80,7 @@ namespace ScrollBase.ViewModels
             }
         }
 
-        // 3. The Filter Logic
+        // The Filter Logic
         private void FilterPages()
         {
             // If the search bar is empty, show all the pages again

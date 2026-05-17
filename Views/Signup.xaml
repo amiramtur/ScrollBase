@@ -5,10 +5,30 @@
              xmlns:controls="clr-namespace:ScrollBase.Controls"
              x:DataType="vm:SignupVM"
              x:Class="ScrollBase.Views.Signup"
-             Title="Signup">
+             Title="Welcome to">
 
-    <VerticalStackLayout>
+    
+    
+        <!--<VerticalStackLayout>
+        <Button Text="i" FontSize="20" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" BackgroundColor="LightYellow" Clicked="ToggleInfoBox"></Button>
+        <Border x:Name="InfoBox" 
+            IsVisible="False" 
+            AnchorY="0" 
+            ScaleY="0"
+            Background="LightYellow"
+            Stroke="Goldenrod"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 8"
+            Padding="10"
+            Margin="0, -5, 0, 10">
 
+            <Label Text="ScrollBase is an open-source platform, made with the sole purpose of bringing your favorite websites together into one, friendly user-interface."
+           TextColor="Black"
+           FontSize="17"
+           LineBreakMode="WordWrap" />
+        </Border>
+
+        <Image Source="textlogo.png"></Image>
         <Entry x:Name="EmailEntry" Placeholder="email" Text="{Binding Email}" HorizontalTextAlignment="End"/>
         <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
         <Button Text="Sign Up" Command="{Binding SignupCommand}" BackgroundColor="LawnGreen"></Button>
@@ -18,7 +38,68 @@
         <Label Text="Already have an account?" HorizontalTextAlignment="Center"></Label>
         <Button Text="Login " Clicked="LoadLogin"></Button>
         
+        
         <controls:NetworkRetryOverlay />
-    </VerticalStackLayout>
-    
+    </VerticalStackLayout>-->
+    <Grid>
+        <VerticalStackLayout Padding="30" Spacing="10" VerticalOptions="Center">
+            <Button Text="i" 
+                FontSize="20" 
+                WidthRequest="40" 
+                HeightRequest="40" 
+                CornerRadius="20"
+                HorizontalOptions="End" 
+                BackgroundColor="LightYellow" 
+                Clicked="ToggleInfoBox" />
+
+            <Image Source="textlogo.png" HeightRequest="300" WidthRequest="300" Margin="0,0,0,20"/>
+
+            <Entry x:Name="EmailEntry" Placeholder="email" Text="{Binding Email}" HorizontalTextAlignment="End"/>
+            <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
+
+            <Button Text="Sign Up" Command="{Binding SignupCommand}" BackgroundColor="LawnGreen" Margin="0,10,0,0"/>
+
+            <Label Text="Already have an account?" HorizontalTextAlignment="Center" Margin="0,20,0,0"></Label>
+            <Button Text="Login" Clicked="LoadLogin"></Button>
+        </VerticalStackLayout>
+
+        <BoxView x:Name="BackgroundDimmer"
+             BackgroundColor="Black"
+             Opacity="0"
+             IsVisible="False"
+             ZIndex="5">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="ToggleInfoBox" />
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <Border x:Name="InfoBox" 
+            IsVisible="False" 
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            WidthRequest="300"
+            Background="LightYellow"
+            Stroke="Transparent"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 15"
+            Padding="20"
+            ZIndex="10">
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="ScrollBase is an open-source platform, made with the sole purpose of bringing your favorite websites together into one, friendly user-interface."
+                   TextColor="Black"
+                   FontSize="17"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+
+                <Button Text="Close" 
+                    BackgroundColor="MediumPurple" 
+                    TextColor="White" 
+                    Clicked="ToggleInfoBox" />
+            </VerticalStackLayout>
+        </Border>
+
+        <controls:NetworkRetryOverlay />
+    </Grid>
+
 </ContentPage>

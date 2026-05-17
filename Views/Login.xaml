@@ -13,11 +13,6 @@
         <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
         <Button Text="Login" BackgroundColor="LawnGreen" Command="{Binding LoginCommand}"/>
 
-        <Label></Label>
-        <Label></Label>
-        <Label Text="Don't have an account?" HorizontalTextAlignment="Center"></Label>
-        <Button Text="Create an account " Clicked="LoadSignup"> </Button>
-
         <controls:NetworkRetryOverlay />
     </VerticalStackLayout>
 </ContentPage>

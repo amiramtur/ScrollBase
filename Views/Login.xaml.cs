@@ -13,11 +13,4 @@ public partial class Login : ContentPage
         //BindingContext = new LoginVM(_client);
         BindingContext = vm;
 	}
-
-    private async void LoadSignup(object sender, EventArgs e)
-    {
-        var signupPage = Handler.MauiContext.Services.GetService<Signup>();
-
-        await Application.Current.MainPage.Navigation.PushAsync(signupPage);
-    }
 }
