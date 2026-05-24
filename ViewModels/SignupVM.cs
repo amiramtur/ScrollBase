@@ -33,7 +33,8 @@ namespace ScrollBase.ViewModels
         [RelayCommand]
         private async Task Signup()
         {
-            // call the base class method
+            // network ----------------------------------------------
+
             bool hasInternet = await EnsureConnectedAsync();
 
             // if it tried 5 times and still failed, stop the signup process.
@@ -42,6 +43,8 @@ namespace ScrollBase.ViewModels
             {
                 return;
             }
+
+            // network ----------------------------------------------
 
             // service input check
             if (!InputCheck.IsEmailValid(Email))
@@ -57,10 +60,10 @@ namespace ScrollBase.ViewModels
 
             try
             {
-                // 1. Firebase signup
+                // firebase signup
                 var result = await _authClient.CreateUserWithEmailAndPasswordAsync(Email!, Password!);
 
-                // 2. Hop onto the Main UI Thread to update the screen
+                // updating screen with mainpage UI
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     if (Application.Current?.MainPage != null)
@@ -74,14 +77,12 @@ namespace ScrollBase.ViewModels
 
                         await Application.Current.MainPage.DisplayAlert("Signup", "Signup success.", "OK");
 
-                        // 3. Swap the entire app over to your Flyout Menu!
                         Application.Current.MainPage = new AppShell();
                     }
                 });
             }
             catch (Exception ex)
             {
-                // Fixed this one too!
                 await Application.Current.MainPage.DisplayAlert("Signup failed", "Something went wrong", "OK");
             }
         }

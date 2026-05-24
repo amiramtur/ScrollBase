@@ -24,15 +24,15 @@ namespace ScrollBase.ViewModels
         [ObservableProperty]
         private string? _link;
 
-        // Tracks if the switch is toggled
+        // tracks if the switch is toggled
         [ObservableProperty]
         bool isRemoveMode;
 
-        // The list that the Picker reads from (initialized so it's not null!)
+        // the list that the picker in remove page reads from
         [ObservableProperty]
         ObservableCollection<SavedPageModel> savedPagesList = new();
 
-        // The specific item the user clicks on inside the Picker
+        // the specific page the user picks
         [ObservableProperty]
         SavedPageModel selectedPageToRemove;
 
@@ -45,6 +45,8 @@ namespace ScrollBase.ViewModels
         [RelayCommand]
         private async Task AddPage()
         {
+            // network ----------------------------------------------
+
             // call the base class method
             bool hasInternet = await EnsureConnectedAsync();
 
@@ -54,6 +56,8 @@ namespace ScrollBase.ViewModels
             {
                 return;
             }
+
+            // network ----------------------------------------------
 
             if (!InputCheck.IsLinkValid(Link))
             {
@@ -93,7 +97,7 @@ namespace ScrollBase.ViewModels
         [RelayCommand]
         private async Task RemovePage()
         {
-            // call the base class method
+            // network ----------------------------------------------
             bool hasInternet = await EnsureConnectedAsync();
 
             // if it tried 5 times and still failed, stop the signup process.
@@ -102,6 +106,7 @@ namespace ScrollBase.ViewModels
             {
                 return;
             }
+            // network ----------------------------------------------
 
             if (SelectedPageToRemove == null)
             {
@@ -119,7 +124,7 @@ namespace ScrollBase.ViewModels
                 var uid = _authClient?.User?.Uid;
                 if (string.IsNullOrEmpty(uid))
                 {
-                    // Using Application.Current.MainPage just in case Shell is detached!
+                    // using Application.Current.MainPage in case Shell is detached
                     await Application.Current.MainPage.DisplayAlert("Error", "No authenticated user found.", "OK");
                     return;
                 }
@@ -132,30 +137,29 @@ namespace ScrollBase.ViewModels
 
                 try
                 {
-                    // 1. Fetch all pages for this specific user to find the matching Firebase Key
+                    // fetching all pages for the currently connected user to find the matching FireBase Key
                     var allUserPages = await _client
                         .Child("SavedPages")
                         .Child(uid)
                         .OnceAsync<SavedPageModel>();
 
-                    // 2. Find the exact Firebase object that matches what the user selected in the Picker
+                    // find the exact Firebase object that matches the page picked by the user
                     var pageToDelete = allUserPages.FirstOrDefault(p =>
                         p.Object.PageName == SelectedPageToRemove.PageName &&
                         p.Object.PageLink == SelectedPageToRemove.PageLink);
 
                     if (pageToDelete != null)
                     {
-                        // 3. We found the key (e.g. "-Om4LtV9faWXPDF4QReN")! Now tell Firebase to nuke it.
+                        // removing the key (the page) from FireBase
                         await _client
                             .Child("SavedPages")
                             .Child(uid)
                             .Child(pageToDelete.Key)
                             .DeleteAsync();
 
-                        // 4. Remove it from your local ObservableCollection so it instantly vanishes from the UI Picker
+                        // removing it from local ObservableCollection so it vanishes from the UI picker
                         SavedPagesList.Remove(SelectedPageToRemove);
 
-                        // Clear the selection
                         SelectedPageToRemove = null;
 
                         await Application.Current.MainPage.DisplayAlert("Success", "Page removed successfully.", "OK");
@@ -177,17 +181,16 @@ namespace ScrollBase.ViewModels
         {
             try
             {
-                // 1. Get the current logged-in user
+                // getting the current connected user
                 var user = _authClient?.User;
                 if (user == null || string.IsNullOrEmpty(user.Uid)) return;
 
-                // 2. Fetch their saved pages from Firebase
+                // getting their saved pages from Firebase
                 var pages = await _client
                     .Child("SavedPages")
                     .Child(user.Uid)
                     .OnceAsync<SavedPageModel>();
 
-                // 3. Clear the old list and fill it with the newly fetched pages
                 SavedPagesList.Clear();
                 foreach (var item in pages)
                 {
@@ -203,22 +206,20 @@ namespace ScrollBase.ViewModels
             }
         }
 
-        // This special method name is recognized by the MVVM Toolkit. 
-        // It fires automatically whenever the switch is toggled!
+        // special MVVM method:
+        // activates automatically whenever the switch is toggled
         partial void OnIsRemoveModeChanged(bool value)
         {
             // 'value' is the new state of the switch.
-            // True = Remove Mode, False = Add Mode
+            // true = remove, false = add
             if (value == true)
             {
-                // The switch was just flipped to Remove!
-                // We use the discard operator (_) to safely fire-and-forget the async task 
-                // without holding up the UI thread.
+                // using the discard operator (_) to safely "forget" the async task without holding up the UI thread.
                 _ = LoadUserPagesAsync();
             }
             else
             {
-                // Optional: Clear the list when they switch back to "Add" to save memory
+                // clearing the list when they switch back to "add" to save memory
                 SavedPagesList.Clear();
             }
         }

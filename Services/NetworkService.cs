@@ -20,8 +20,8 @@ namespace ScrollBase.Services
             _connectivity.NetworkAccess == NetworkAccess.Internet;
 
         /// <summary>
-        /// Polls for a connection, reporting a live countdown on each tick.
-        /// Returns true as soon as a connection is found, false if all attempts fail.
+        /// attempts connection, reporting a live countdown on each tick
+        /// returns true as soon as a connection is found, false if all attempts fail
         /// </summary>
         public async Task<bool> WaitForConnectionAsync(
             int maxAttempts = 5,

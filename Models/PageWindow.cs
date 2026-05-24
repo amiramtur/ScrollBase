@@ -12,7 +12,6 @@ namespace ScrollBase.Models
         public string? PageName { get; set; }
         public string? PageLink { get; set; }
 
-        // Added to satisfy bindings in MainPage (ItemsSource expects `Url` and `HeightRequest`)
         public string? Url
         {
             get => PageLink;

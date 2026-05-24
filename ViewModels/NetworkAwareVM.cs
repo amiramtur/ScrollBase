@@ -24,10 +24,8 @@ namespace ScrollBase.ViewModels
 
         protected NetworkAwareViewModel(NetworkService network) => _network = network;
 
-        /// <summary>
-        /// Call this at the top of any method that needs internet.
-        /// Returns false and shows a dialog if all attempts fail.
-        /// </summary>
+        // this function is called whenever a connection check is necessary
+        // it returns false if failed to connect
         protected async Task<bool> EnsureConnectedAsync(CancellationToken ct = default)
         {
             var progress = new Progress<NetworkRetryStatus>(status =>
@@ -36,6 +34,7 @@ namespace ScrollBase.ViewModels
                 IsRetrying = !status.IsConnected && !status.GaveUp;
             });
 
+            // timer utility
             bool connected = await _network.WaitForConnectionAsync(
                 maxAttempts: 5, secondsBetweenChecks: 5, progress: progress, ct: ct);
 

@@ -5,7 +5,7 @@ using ScrollBase.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq; // Added for the filter query
+using System.Linq; // for the filter query
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -16,12 +16,12 @@ namespace ScrollBase.ViewModels
         private readonly FirebaseClient _firebaseClient;
         private readonly FirebaseAuthClient _authClient;
 
-        // 1. A master list to keep the original data safe when we filter
+        // a master list to keep the original data safe when we filter (search query)
         private List<SavedPageModel> _allPages = new();
 
         public ObservableCollection<SavedPageModel> WebContainers { get; set; } = new();
 
-        // 2. The SearchQuery property linked to your XAML SearchBar
+        // the search query property linked to the XAML SearchBar
         private string _searchQuery;
         public string SearchQuery
         {
@@ -32,7 +32,7 @@ namespace ScrollBase.ViewModels
                 {
                     _searchQuery = value;
                     OnPropertyChanged();
-                    // Instantly trigger the filter whenever they type!
+                    // instantly trigger the filter whenever the text is typed
                     FilterPages();
                 }
             }
@@ -60,7 +60,7 @@ namespace ScrollBase.ViewModels
                     .OnceAsync<SavedPageModel>();
 
                 WebContainers.Clear();
-                _allPages.Clear(); // Clear the master list on fresh load
+                _allPages.Clear(); // clear the master list on fresh load
 
                 if (savedPagesData != null)
                 {
@@ -69,7 +69,7 @@ namespace ScrollBase.ViewModels
                         if (item?.Object != null)
                         {
                             WebContainers.Add(item.Object);
-                            _allPages.Add(item.Object); // Back it up!
+                            _allPages.Add(item.Object); // backing each page up
                         }
                     }
                 }
@@ -80,10 +80,10 @@ namespace ScrollBase.ViewModels
             }
         }
 
-        // The Filter Logic
+        // the Filter Logic
         private void FilterPages()
         {
-            // If the search bar is empty, show all the pages again
+            // if the search bar is empty, show all the pages again
             if (string.IsNullOrWhiteSpace(SearchQuery))
             {
                 WebContainers.Clear();
@@ -94,7 +94,7 @@ namespace ScrollBase.ViewModels
             }
             else
             {
-                // Filter the list based on what they typed (ignoring uppercase/lowercase)
+                // filter the list based on what's typed (ignoring uppercase/lowercase)
                 var filtered = _allPages.Where(p =>
                     p.PageName != null &&
                     p.PageName.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase)).ToList();

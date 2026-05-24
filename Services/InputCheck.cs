@@ -29,7 +29,7 @@ namespace ScrollBase.Services
 
 
 
-        // checks text input like username or password
+        // checks text input (email or password)
         public static bool IsEmailValid(string email)
         {
             // IsEmptyString(email) ||

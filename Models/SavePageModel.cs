@@ -9,12 +9,11 @@ namespace ScrollBase.Models
 {
     public class SavedPageModel
     {
-        // These match the keys in your Firebase Realtime Database
+        // these match the keys in Firebase Realtime Database
         public string PageName { get; set; }
         public string PageLink { get; set; }
 
-        // Computed property for the WebView binding. 
-        // Ensures the URL has "https://" so the WebView doesn't fail to load.
+        // ensures the URL has "https://" so the WebView doesn't fail to load
         public string Url => LinkCheck(PageLink);
 
         // Matches your requested UI binding
