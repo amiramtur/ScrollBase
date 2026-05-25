@@ -5,12 +5,9 @@ using ScrollBase.ViewModels;
 
 public partial class Login : ContentPage
 {
-    //private readonly FirebaseAuthClient _client;
-	//public Login(FirebaseAuthClient client)
 	public Login(LoginVM vm)
 	{
 		InitializeComponent();
-        //BindingContext = new LoginVM(_client);
         BindingContext = vm;
 	}
 }

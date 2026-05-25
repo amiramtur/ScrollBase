@@ -11,7 +11,7 @@ namespace ScrollBase
         {
             InitializeComponent();
 
-            // Set the BindingContext to our injected ViewModel
+            // set the BindingContext to the injected VM
             _viewModel = viewModel;
             BindingContext = _viewModel;
         }

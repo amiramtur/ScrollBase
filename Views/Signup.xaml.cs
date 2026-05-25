@@ -17,6 +17,7 @@ public partial class Signup : ContentPage
         await Application.Current.MainPage.Navigation.PushAsync(loginPage);
     }
 
+    // i button activates this
     private async void ToggleInfoBox(object sender, EventArgs e)
     {
         if (InfoBox.IsVisible)
@@ -37,9 +38,9 @@ public partial class Signup : ContentPage
             BackgroundDimmer.IsVisible = true;
 
             await Task.WhenAll(
-                InfoBox.FadeTo(1, 250, Easing.SinInOut),
-                InfoBox.ScaleTo(1, 250, Easing.SinInOut), // BackOut gives a tiny "bounce"
-                BackgroundDimmer.FadeTo(0.5, 250) // Dims the background to 50% black
+                InfoBox.FadeTo(1, 250, Easing.SinInOut), // lil animations
+                InfoBox.ScaleTo(1, 250, Easing.SinInOut),
+                BackgroundDimmer.FadeTo(0.5, 250)
             );
         }
     }

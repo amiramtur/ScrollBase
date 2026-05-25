@@ -7,40 +7,6 @@
              x:Class="ScrollBase.Views.Signup"
              Title="Welcome to">
 
-    
-    
-        <!--<VerticalStackLayout>
-        <Button Text="i" FontSize="20" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" BackgroundColor="LightYellow" Clicked="ToggleInfoBox"></Button>
-        <Border x:Name="InfoBox" 
-            IsVisible="False" 
-            AnchorY="0" 
-            ScaleY="0"
-            Background="LightYellow"
-            Stroke="Goldenrod"
-            StrokeThickness="1"
-            StrokeShape="RoundRectangle 8"
-            Padding="10"
-            Margin="0, -5, 0, 10">
-
-            <Label Text="ScrollBase is an open-source platform, made with the sole purpose of bringing your favorite websites together into one, friendly user-interface."
-           TextColor="Black"
-           FontSize="17"
-           LineBreakMode="WordWrap" />
-        </Border>
-
-        <Image Source="textlogo.png"></Image>
-        <Entry x:Name="EmailEntry" Placeholder="email" Text="{Binding Email}" HorizontalTextAlignment="End"/>
-        <Entry x:Name="PasswordEntry" Placeholder="password" Text="{Binding Password}" HorizontalTextAlignment="End" IsPassword="True"/>
-        <Button Text="Sign Up" Command="{Binding SignupCommand}" BackgroundColor="LawnGreen"></Button>
-
-        <Label></Label>
-        <Label></Label>
-        <Label Text="Already have an account?" HorizontalTextAlignment="Center"></Label>
-        <Button Text="Login " Clicked="LoadLogin"></Button>
-        
-        
-        <controls:NetworkRetryOverlay />
-    </VerticalStackLayout>-->
     <Grid>
         <VerticalStackLayout Padding="30" Spacing="10" VerticalOptions="Center">
             <Button Text="i" 

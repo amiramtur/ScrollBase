@@ -8,19 +8,6 @@
     Shell.FlyoutBehavior="Flyout"
     Title="ScrollBase">
 
-    <!--<ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:Login}"
-        Route="Login"
-        FlyoutItemIsVisible="False" />
-
-    <ShellContent
-        Title="Signup"
-        ContentTemplate="{DataTemplate views:Signup}"
-        Route="SignUp"
-        FlyoutItemIsVisible="False" />-->
-
-
     <FlyoutItem Title="main menu" Route="MainMenu">
 
         <Tab Title="Home">

@@ -9,16 +9,14 @@ namespace ScrollBase.Views;
 
 public partial class Add : ContentPage
 {
-    public Add(ManageWebPagesVM viewModel) // Inject the ViewModel here!
+    public Add(ManageWebPagesVM viewModel)
     {
         InitializeComponent();
-        BindingContext = viewModel;    // Bind it to the UI!
+        BindingContext = viewModel;    // binding to the UI
     }
 
     private async void LoadHome(object sender, EventArgs e)
     {
-        // Ask the MAUI Dependency Injection system to provide the fully-built MainPage 
-        // (This automatically injects the ViewModel and Firebase clients!)
         var mainPage = Handler.MauiContext.Services.GetService<MainPage>();
 
         await App.Current.MainPage.Navigation.PushAsync(mainPage);

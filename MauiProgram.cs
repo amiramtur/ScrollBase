@@ -36,7 +36,7 @@ namespace ScrollBase
                    {
                        new EmailProvider()
                    },
-                UserRepository = new FileUserRepository("appuser")//persist data into %AppData%\appuser
+                UserRepository = new FileUserRepository("appuser") // putting data in %AppData%\appuser
             }));
 #endif
             builder.Services.AddSingleton(new FirebaseClient("https://scrollbasedb-default-rtdb.europe-west1.firebasedatabase.app/"));
@@ -48,9 +48,7 @@ namespace ScrollBase
             builder.Services.AddSingleton<LoginVM>();
             builder.Services.AddSingleton<Signup>();
             builder.Services.AddSingleton<SignupVM>();
-            builder.Services.AddSingleton<AppUserListVM>();
             builder.Services.AddSingleton<AppUserList>();
-            builder.Services.AddSingleton<DetailsPageVM>();
             builder.Services.AddSingleton<DetailsPage>();
             builder.Services.AddSingleton<ManageWebPagesVM>();
             builder.Services.AddSingleton<NetworkService>();

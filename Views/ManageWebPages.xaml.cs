@@ -10,8 +10,6 @@ public partial class AddWebPage : ContentPage
     {
         InitializeComponent();
 
-        // Use MauiApplication.Current.Services to resolve the VM from the MAUI DI container.
-        // Application.Current does not expose a Services property directly.
         var mauiApp = Microsoft.Maui.Controls.Application.Current as Microsoft.Maui.Controls.Application;
         var services = (mauiApp as IServiceProvider)?.GetService<IServiceProvider>() ?? App.Current?.Handler?.MauiContext?.Services;
 
